@@ -1,0 +1,435 @@
+    /* fonts goes here  */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter&family=Inter:wght@400&display=swap');
+    @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
+
+    /* custom css starts here */
+    body {
+        background: linear-gradient(0deg, #343434 0%, #343434 100%), linear-gradient(169deg, rgba(36, 36, 36, 0.40) 0%, rgba(0, 0, 0, 0.40) 100%);
+        background: -webkit-linear-gradient(0deg, #343434 0%, #343434 100%), linear-gradient(169deg, rgba(36, 36, 36, 0.40) 0%, rgba(0, 0, 0, 0.40) 100%);  /* Chrome 10-25, Safari 5.1-6 */
+    }
+
+    .brand-title {
+        color: #FFF;
+        font-size: 18px;
+        font-family: 'Poppins';
+        font-weight: 200;
+        text-align: center;
+        word-wrap: break-word;
+
+    }
+    .custom-block{
+        position: relative;
+        top: 140px;
+    }
+    .custom-nav{
+        text-align: right;
+    }
+    .login-form{
+        width: 295px;
+    }
+    .reset-pass{
+        /* typos  */
+        text-align: center;
+    }
+    .reset-pass > a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 12px;
+        font-family: 'Inter';
+        font-weight: 400;
+    }
+    .reset-pass > a:hover {
+        text-decoration: underline;
+        color: #fff;
+        font-size: 12px;
+        font-family: 'Inter';
+        font-weight: 400;
+    }
+    .signup-btn > a {
+        text-decoration: none;
+        color: #1f1f1f;
+        font-family: 'Inter';
+        font-weight: 400;
+    }
+    .custom-title{
+        color: #fff;
+        font-size: 22px;
+        font-family: 'Poppins';
+        font-weight: 400;
+    }
+    input.form-control{
+        background-color: #313131;
+        width: 295px;
+        border-radius: 14px;
+        font-family: 'Poppins';
+        color: #4A4A4A;
+        border: 1px solid #4a4a4a;
+        height: 45px;
+        font-size: 14px;
+        font-weight: 200;
+    }
+    .login-btn{
+        width: 295px;
+        height: 45px;
+        color: #1f1f1f;
+        font-size: 14px;
+        font-family: 'Poppins';
+        font-weight: 300;
+        word-wrap: break-word;
+        border-radius:14px;
+        background-color: #75C1BE;
+        box-shadow: 10px 15px 70px rgba(0,0,0,0.1);
+        border: none;
+    }
+    .custom-title{
+        color: #FFF;
+        font-size: 22px;
+        font-family: 'Poppins';
+        font-weight: 400;
+        word-wrap: break-word;
+        height: 34px;
+    }
+    .custom-sub-title{
+        color: #4A4A4A;
+        font-size: 12px;
+        font-family: 'Poppins';
+        font-weight: 400;
+        word-wrap: break-word;
+        height: 24px;
+    }
+    .emoji > img{
+        width: 29px;
+        height: 33px;
+        position: relative;
+        bottom: 3px;
+        right: 5px;
+    }
+
+    .upper-card{
+        width: 100%;
+        background-color: #1f1f1f;
+        /* background-color: #FEC92D; */
+        border-radius: 0px 0px 32px 32px;
+
+    }
+    span.nav-icon{
+        position: relative;
+        height: 24px;
+        width: 24px;
+        top:20px;
+        color:#fff;  
+    }
+    .nav-icon:first-child{
+        left: 20px;
+    }
+    .nav-icon:last-child{
+        right: 30px;
+        font-size: 30px;
+        top:10px;
+    }
+    .profile-image{
+        text-align: center;
+    }
+    .profile-image > img{
+        width: 135px;
+        height: 100%;
+        border-radius: 100%;
+        border: 3px solid #FEC92D; 
+    }
+    .profile-title{
+        color: #fff;
+        font-size: 18px;
+        font-family: 'Poppins';
+        font-weight: 500;
+        word-wrap: break-word;
+        text-align: center;
+        height: 35px;
+    }
+    .profile-subtitle{
+        color: #fff;
+        font-size: 12px;
+        font-family: 'Poppins';
+        font-weight: 400;
+        word-wrap: break-word;
+        text-align: center;
+        height: 24px;
+    }
+    .profile-bio{
+        color: #fff;
+        font-size: 11px;
+        font-family: 'Poppins';
+        font-weight: 300;
+        text-transform: capitalize;
+        word-wrap: break-word;
+        width: 276px;
+        height: 68px;
+        text-align: center;
+    }
+    .horizontal-card{
+        width: 340px;
+        height: 100%;
+        background-color: #1f1f1f;
+        border-radius: 14px;
+        padding: 10px 15px 10px 20px;
+    }
+    .horizontal-image > img{
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        border: 1px solid #FEC92D;
+    }
+    .horizontal-profile{
+        color: #fff;
+        font-size: 14px;
+        font-family: 'Poppins';
+        font-weight: 200;
+        word-wrap: break-word
+    }
+    .horizontal-subtitle{
+        color: #4A4A4A;
+        font-size: 10px;
+        font-family: 'Poppins';
+        font-weight: 200;
+        word-wrap: break-word;
+    }
+    .handles-icon > img{
+        width: 28px;
+        height: 28px;
+    }
+    .profile-handle{
+        border: 1px solid #f8f8f8;
+        border-radius: 18px;
+        height: 50px;
+        width: 205px;
+        padding: 10px;
+    }
+    .bio-block{
+        background-color: #1f1f1f;
+        border-radius: 32px;
+        text-align: center;
+        padding: 22px;
+        color: #FFF;
+        font-size: 11px;
+        font-family: 'Poppins';
+        font-weight: 300;
+        text-transform: capitalize;
+        word-wrap: break-word;
+        width: 340px;
+    }
+    .social-block{
+        border-radius: 32px;
+        border: 1px solid #fff;
+        padding: 14px 30px 0px 30px;
+        color: #FFC700;
+        font-size: 14px;
+        font-family: 'Poppins';
+        font-weight: 300;
+        text-transform: capitalize;
+        word-wrap: break-word;
+        text-align: center;
+        height: 55px;
+        width: 340px;
+    }
+    .social-block > a{
+        text-decoration: none;
+        color: #FFC700;
+    }
+    .confirm-btn{
+        border: 1px solid #FEC92D;
+        padding: 2px 5px 2px 5px;
+        border-radius: 3px;
+        margin-top: 5px;
+        background-color: transparent;
+        color: #FEC92D;
+        font-family: 'Poppins';
+        font-size: 12px;
+        font-weight: 300;
+
+    }
+    .confirm-btn:hover{
+        background-color: #ffc107;
+        color: #000;
+    }
+    .reject-btn{
+        border: 1px solid rgb(67 56 202);
+        padding: 2px 7px 2px 7px;
+        border-radius: 3px;
+        margin-top: 5px;
+        background-color: transparent;
+        color: rgb(67 56 202);
+        font-family: 'Poppins';
+        font-size: 12px;
+        font-weight: 300;
+    }
+    .reject-btn:hover{
+        background-color:rgb(67 56 202);
+        color: #fff;
+    }
+    .friends-image{
+        position: relative;
+        top: 15px;
+    }
+    .friends-image > img{
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        border: 1px solid #FEC92D;
+    }
+
+    /* 
+    Edit profile section
+    */
+
+    .edit-btn{
+        padding: 8px;
+        color: #EBBF02;
+        font-size: 14px;
+        font-family: 'Poppins';
+        font-weight: 300;
+        word-wrap: break-word;
+        border-radius:5px;
+        box-shadow: 10px 15px 70px rgba(0,0,0,0.1);
+        border: 1px solid #EBBF02;
+        background-color: transparent;
+    }
+    .edit-btn:hover{
+        background: linear-gradient(84deg, #FECE03 0%, #EBBF02 100%); 
+        background: -webkit-linear-gradient(84deg, #FECE03 0%, #EBBF02 100%);
+        color: #000;
+        font-size: 14px;
+        font-family: 'Poppins';
+        font-weight: 300;
+    }
+    textarea.form-control{
+        background-color: #313131;
+        width: 295px;
+        border-radius: 5px;
+        font-family: 'Poppins';
+        color: #4A4A4A;
+        border: 1px solid #4a4a4a;
+        height: 45px;
+        font-size: 14px;
+        font-weight: 200;
+    }
+    .edit-profile > input.form-control{
+        color: #f8f8f8;
+    }
+    .edit-title{
+        text-align: left;
+        color: #fff;
+        font-size: 14px;
+        font-family: 'Poppins';
+        font-weight: 300;
+    }
+/* 
+
+Popover menu css goes here
+*/
+
+
+*{
+    /* font-family: "poppins", sans-serif; */
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-color: #343434;
+    height: 100vh;
+}
+.icons-size{
+    color: #fff;
+    font-size: 14px;
+}
+.action{
+    font-family: "poppins", sans-serif;
+    position: fixed;
+    right: 30px;
+    top:20px
+}
+.action .menu{
+    background-color:#4A4A4A;
+    box-sizing:0 5px 25px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    padding: 10px 20px;
+    position: absolute;
+    right: -10px;
+    width: 200px;
+    transition: 0.5s;
+    top: 120px;
+    visibility: hidden;
+    opacity: 0;
+}
+.action .menu.active{
+    opacity: 1;
+    top: 40px;
+    visibility: visible;
+}
+.action .menu::before{
+    background-color:#4A4A4A;
+    content: '';
+    height: 20px;
+    position: absolute;
+    right: 10px;
+    transform:rotate(45deg);
+    top:-5px;
+    width: 20px;
+}
+.action .menu h3 div{
+    color: #818181;
+    font-size: 14px;
+    font-weight: 400;
+}
+.action .menu ul li{
+    align-items: center;
+    border-top:1px solid rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: left;
+    list-style: none;
+    padding: 10px 0px;
+}
+.action .menu ul li img{
+    max-width: 20px;
+    margin-right: 10px;
+    opacity: 0.5;
+    transition:0.5s
+}
+.action .menu ul li a{
+    display: inline-block;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding-left: 15px;
+    text-decoration: none;
+    text-transform: capitalize;
+    transition: 0.5s;
+}
+.action .menu ul li:hover img{
+    opacity: 1;
+}
+.action .menu ul li:hover a{
+    color:#FEC92D;
+}
+li > span{
+    color: #fff;
+}
+
+/* 
+sign up btn
+*/
+.signup-btn {
+    padding: 6px;
+    background: #75C1BE;
+    border: none;
+    color: #fff;
+    list-style: none;
+    border-radius: 10px;
+    font-size: 12px;
+    width: 90px;
+  }
+  .signup-btn > a:hover {
+    text-decoration: none;
+    color: #1f1f1f;
+    font-family: 'Inter';
+    font-weight: 400;
+}
