@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=, initial-scale=1.0">
-    <link rel="stylesheet" href="../asset/css/style.css">
+    <link rel="stylesheet" href="./asset/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Login - Expense NoteKori</title>
+    <title>Register - Expense NoteKori</title>
 </head>
 
 <body>
@@ -15,7 +15,7 @@
     <div class="container">
         <div class="custom-nav mt-3 mr-2">
             <button class="signup-btn">
-                <a href="register.html" target="_blank" rel="noopener noreferrer">Sign Up</a>
+                <a href="login.html" target="_blank" rel="noopener noreferrer">Login</a>
             </button>
         </div>
         <!-- custom nav ends here  -->
@@ -23,24 +23,23 @@
             <div class="d-flex flex-column justify-content-between custom-block login-form">
                 <!-- Form header title and subtitle -->
                 <div>
-                    <h2 class="custom-title">Login</h2>
+                    <h2 class="custom-title">Register</h2>
                 </div>
                 <!-- login form goes here  -->
                 <div class="mt-4">
                     <form action="#" method="POST">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="nameInput" placeholder="Name">
+                        </div>
                         <div class="mb-3">
                             <input type="email" class="form-control" id="emailInput" placeholder="Email">
                         </div>
                         <div class="mb-3">
                             <input type="password" class="form-control" id="passwordInput" placeholder="Password">
                         </div>
-                        <button type="submit" class="login-btn">Login</button>
+                        <button type="submit" class="login-btn">Register</button>
                     </form>
                 <!-- login form ends here  -->
-                </div>
-                <!-- forget password link  -->
-                <div class="reset-pass mt-5">
-                    <a href="#" target="_blank" rel="noopener noreferrer">Forget Password?</a>
                 </div>
             </div>
         </div>

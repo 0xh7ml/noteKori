@@ -2,8 +2,9 @@
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Inter&family=Inter:wght@400&display=swap');
     @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
-
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&display=swap');
     /* custom css starts here */
+
     body {
         background: linear-gradient(0deg, #343434 0%, #343434 100%), linear-gradient(169deg, rgba(36, 36, 36, 0.40) 0%, rgba(0, 0, 0, 0.40) 100%);
         background: -webkit-linear-gradient(0deg, #343434 0%, #343434 100%), linear-gradient(169deg, rgba(36, 36, 36, 0.40) 0%, rgba(0, 0, 0, 0.40) 100%);  /* Chrome 10-25, Safari 5.1-6 */
@@ -52,12 +53,6 @@
         font-family: 'Inter';
         font-weight: 400;
     }
-    .custom-title{
-        color: #fff;
-        font-size: 22px;
-        font-family: 'Poppins';
-        font-weight: 400;
-    }
     input.form-control{
         background-color: #313131;
         width: 295px;
@@ -72,13 +67,13 @@
     .login-btn{
         width: 295px;
         height: 45px;
-        color: #1f1f1f;
+        color: #fff;
         font-size: 14px;
         font-family: 'Poppins';
         font-weight: 300;
         word-wrap: break-word;
         border-radius:14px;
-        background-color: #75C1BE;
+        background-color: #6c63ff;
         box-shadow: 10px 15px 70px rgba(0,0,0,0.1);
         border: none;
     }
@@ -88,7 +83,6 @@
         font-family: 'Poppins';
         font-weight: 400;
         word-wrap: break-word;
-        height: 34px;
     }
     .custom-sub-title{
         color: #4A4A4A;
@@ -106,13 +100,6 @@
         right: 5px;
     }
 
-    .upper-card{
-        width: 100%;
-        background-color: #1f1f1f;
-        /* background-color: #FEC92D; */
-        border-radius: 0px 0px 32px 32px;
-
-    }
     span.nav-icon{
         position: relative;
         height: 24px;
@@ -120,10 +107,10 @@
         color:#fff;  
     }
     .nav-icon:first-child{
-        left: 20px;
+        /* left: 20px; */
     }
     .nav-icon:last-child{
-        right: 30px;
+        right: 10px;
         font-size: 30px;
         top:10px;
     }
@@ -148,31 +135,34 @@
         text-align: center;
     }
     .horizontal-card{
-        width: 340px;
+        width: 100%;
         height: 100%;
         background-color: #1f1f1f;
         border-radius: 14px;
         padding: 10px 15px 10px 20px;
     }
-    .horizontal-image > img{
-        width: 40px;
-        height: 40px;
-        border-radius: 100%;
-        border: 1px solid #FEC92D;
-    }
-    .horizontal-profile{
+    .horizontal-expense{
         color: #fff;
-        font-size: 14px;
-        font-family: 'Poppins';
-        font-weight: 200;
+        font-size: 16px;
+        font-family: 'Space Grotesk';
+        font-weight: 400;
         word-wrap: break-word
     }
     .horizontal-subtitle{
-        color: #4A4A4A;
-        font-size: 10px;
+        color: #fff;
+        font-size: 12px;
         font-family: 'Poppins';
         font-weight: 200;
         word-wrap: break-word;
+    }
+    .horizontal-amount{
+        color: #fff;
+        font-size: 18px;
+        font-family: 'Poppins';
+        font-weight: 400;
+        word-wrap: break-word;
+        position: relative;
+        top: 10px;
     }
     .handles-icon > img{
         width: 28px;
@@ -314,10 +304,6 @@ Popover menu css goes here
     margin: 0;
     padding: 0;
 }
-body{
-    background-color: #343434;
-    height: 100vh;
-}
 .icons-size{
     color: #fff;
     font-size: 14px;
@@ -400,7 +386,7 @@ sign up btn
 */
 .signup-btn {
     padding: 6px;
-    background: #75C1BE;
+    background: #6c63ff;
     border: none;
     color: #fff;
     list-style: none;
@@ -410,35 +396,184 @@ sign up btn
   }
   .signup-btn > a:hover {
     text-decoration: none;
-    color: #1f1f1f;
+    color: #fff;
+    font-family: 'Inter';
+    font-weight: 400;
+}
+  .signup-btn > a {
+    text-decoration: none;
+    color: #fff;
     font-family: 'Inter';
     font-weight: 400;
 }
 /* 
-dashboard summary
+index
 */
+.index-subtitle{
+    color: #4a4a4a;
+    font-size: 18px;
+    font-family: 'Space Grotesk';
+    font-weight: 400;
+    word-wrap: break-word;
+    text-align: justify;
 
-
-.deposit-summary{
-    width: 100%;
-    text-align: center;
-    position: relative;
-    left: 50px;
 }
-.deposit-subtitle{
+.upper-section > h1{
     color: #1f1f1f;
+    font-family: 'Space Grotesk';
+    font-weight: '600';
+    word-wrap: break-word;
+    text-align: justify;
+
+}
+.upper-section{
+    position: relative;
+    top: 50px;
+    padding: 25px 20px 0px 25px;
+    height: 275px;
+}
+.lower-section{
+    margin-top: 50px;
+}
+
+.btn-wrapper{
+    padding: 25px 20px 0px 25px;
+}
+#get-started{
+    background-color: #6c63ff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px 10px 30px;
+    height: 50px;
+    width: 50%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    font-family: 'Space Grotesk';
+}
+#get-started > a {
+    text-decoration: none;
+    color: #fff;
+}
+#get-started > a:hover {
+    text-decoration: none;
+    color: #fff;
+}
+.deposit-box{
+    position: relative;
+    top:20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #1f1f1f;
+
+}
+ #curren-amount{
+    color: #fff;
+    font-family: 'Space Grotesk';
+    font-weight: 500;
+    word-wrap: break-word;
+    text-align: center;
+    font-size: 2.5em;
+}
+.deposit-amount{
+    color: #fff;
+    font-family: 'Space Grotesk';
+    font-size: 18px;
+    font-weight: 500;
+    word-wrap: break-word;
+}
+.upper-card{
+    width: 100%;
+    background-color: #1f1f1f;
+    /* background-color: #FEC92D; */
+    border-radius: 0px 0px 32px 32px;
+    padding: 20px 20px 25px 25px;
+    color: #fff;
+}
+.dash-title{
+    color: #FFF;
     font-size: 14px;
     font-family: 'Poppins';
     font-weight: 400;
     word-wrap: break-word;
     text-align: center;
-    height: 100px;
-    width: 100px;
-    border:1px solid #75C1BE;
-    background-color: #75C1BE;
-    border-radius: 50%;
+}
+.dash-report{
+    padding: 20px 0px 5px 0px;
+}
+.income-amount, .expense-amount{
+    font-size: 22px;
+    font-weight: 400;
+    font-family: 'Space Grotesk';
+}
+label{
+    font-weight: 200;
+    font-family: 'Poppins';
+}
+.income-amount > .bi{
+    color: rgb(34 197 94);
+}
+.expense-amount > .bi {
+    color: rgb(220 38 38);
 }
 
-.small-box{
+#add-amount{
+    padding: 5px;
+    background-color: #28a745;
+    border: 1px solid #28a745;
+    border-radius: 5px;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    font-family: 'Poppins';
+    font-weight: 300;
+}
+#add-amount:hover{
+    background-color:#24a041;
+    color: #fff;
+    border: 1px solid #28a745;
 
 }
+#add-expense{
+    padding: 5px;
+    background-color:#6c63ff ;
+    border: 1px solid #6c63ff;
+    border-radius: 5px;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    font-family: 'Poppins';
+    font-weight: 300;
+}
+#add-expense:hover{
+    background-color:#6058fe;
+    border: 1px solid #6c63ff;
+    color: #fff;
+}
+.expense-wrap{
+    width: 500px;
+}
+.expense-title{
+    font-size: 1.4rem;
+    color: #fff;
+    font-family: 'Poppins';
+    font-weight: 300;
+}
+.view-all-expense > a{
+    text-decoration: underline;
+    color: #fff;
+    font-size:14px;
+    font-family: 'Poppins';
+    font-weight: 300;
+    position: relative;
+    top: 2px;
+}
+.view-all-expense > a:hover{
+    text-decoration: underline;
+    color: #fff;
+}
+.brand-text {
+    font-size: 1.3rem;
+    font-family: 'Space Grotesk';
+    font-weight: 400;
+  }
