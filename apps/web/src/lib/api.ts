@@ -1,23 +1,29 @@
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8787',
   withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  headers: { 'Content-Type': 'application/json' },
 })
 
-// Response interceptor for handling 401 errors
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      // Redirect to login page
-      if (typeof window !== 'undefined') {
-        window.location.href = '/login'
-      }
+// Inject stored token on every request
+api.interceptors.request.use((config) => {
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('notekori_token')
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`
     }
-    return Promise.reject(error)
+  }
+  return config
+})
+
+api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err.response?.status === 401 && typeof window !== 'undefined') {
+      localStorage.removeItem('notekori_token')
+      window.location.href = '/login'
+    }
+    return Promise.reject(err)
   }
 )

@@ -1,12 +1,12 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { format } from 'date-fns'
+import { format, formatDistanceToNow } from 'date-fns'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatCurrency(amount: number, currency: string = 'USD'): string {
+export function formatCurrency(amount: number, currency = 'USD'): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
@@ -15,21 +15,30 @@ export function formatCurrency(amount: number, currency: string = 'USD'): string
   }).format(amount)
 }
 
-export function formatDate(date: string | Date, formatStr: string = 'MMM d, yyyy'): string {
-  const dateObj = typeof date === 'string' ? new Date(date) : date
-  return format(dateObj, formatStr)
+export function formatDate(date: string | Date, fmt = 'MMM d, yyyy'): string {
+  return format(typeof date === 'string' ? new Date(date) : date, fmt)
 }
 
-export function formatRelativeDate(date: string | Date): string {
-  const dateObj = typeof date === 'string' ? new Date(date) : date
-  const now = new Date()
-  const diffInMs = now.getTime() - dateObj.getTime()
-  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
+export function formatRelative(date: string | Date): string {
+  const d = typeof date === 'string' ? new Date(date) : date
+  const diff = Date.now() - d.getTime()
+  const days = Math.floor(diff / 86_400_000)
+  if (days === 0) return 'Today'
+  if (days === 1) return 'Yesterday'
+  if (days < 7) return `${days} days ago`
+  return format(d, 'MMM d, yyyy')
+}
 
-  if (diffInDays === 0) return 'Today'
-  if (diffInDays === 1) return 'Yesterday'
-  if (diffInDays < 7) return `${diffInDays} days ago`
-  if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`
-  if (diffInDays < 365) return `${Math.floor(diffInDays / 30)} months ago`
-  return `${Math.floor(diffInDays / 365)} years ago`
+export function parseTags(tags: string | string[]): string[] {
+  if (Array.isArray(tags)) return tags
+  try { return JSON.parse(tags) } catch { return [] }
+}
+
+export function initials(name: string): string {
+  return name
+    .split(' ')
+    .map(w => w[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase()
 }

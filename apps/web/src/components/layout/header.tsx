@@ -1,69 +1,74 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { usePathname } from 'next/navigation'
+import { useAuth } from '@/lib/auth-client'
+import { ThemeToggle } from '@/components/shared/theme-toggle'
+import { MobileNav } from './mobile-nav'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { initials } from '@/lib/utils'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { Search, Bell, User, LogOut, Plus } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { LogOut, Settings, User } from 'lucide-react'
+import Link from 'next/link'
+
+const TITLES: Record<string, string> = {
+  '/dashboard':    'Dashboard',
+  '/transactions': 'Transactions',
+  '/analytics':    'Analytics',
+  '/categories':   'Categories',
+  '/recurring':    'Recurring',
+  '/settings':     'Settings',
+}
 
 export function Header() {
+  const pathname = usePathname()
+  const { user, signOut } = useAuth()
+
+  const title = Object.entries(TITLES).find(([k]) => pathname.startsWith(k))?.[1] ?? 'NoteKori'
+
   return (
-    <header className="flex h-16 items-center justify-between border-b bg-background px-6">
-      <div className="flex items-center gap-4">
-        <div className="relative max-w-sm">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Search transactions..."
-            className="pl-9"
-          />
-        </div>
+    <header className="flex h-14 shrink-0 items-center justify-between border-b bg-background/95 backdrop-blur px-4 md:px-6">
+      <div className="flex items-center gap-3">
+        <MobileNav />
+        <h1 className="text-base font-semibold">{title}</h1>
       </div>
 
       <div className="flex items-center gap-2">
-        <Button size="sm" className="gap-2">
-          <Plus className="h-4 w-4" />
-          Add Transaction
-        </Button>
-
-        <Button variant="outline" size="icon" className="relative">
-          <Bell className="h-4 w-4" />
-          <Badge
-            variant="destructive"
-            className="absolute -right-1 -top-1 h-4 w-4 p-0 text-xs"
-          >
-            3
-          </Badge>
-        </Button>
-
+        <ThemeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon">
+            <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
               <Avatar className="h-8 w-8">
-                <AvatarImage src="" />
-                <AvatarFallback>
-                  <User className="h-4 w-4" />
+                <AvatarFallback className="text-xs bg-primary text-primary-foreground">
+                  {user ? initials(user.name) : '?'}
                 </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuLabel>
+              <div className="flex flex-col">
+                <span className="font-medium">{user?.name}</span>
+                <span className="text-xs font-normal text-muted-foreground">{user?.email}</span>
+              </div>
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
+            <DropdownMenuItem asChild>
+              <Link href="/settings" className="cursor-pointer">
+                <Settings className="mr-2 h-4 w-4" />
+                Settings
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="text-destructive focus:text-destructive cursor-pointer"
+              onClick={signOut}
+            >
               <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
+              Sign out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

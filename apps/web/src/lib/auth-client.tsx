@@ -1,31 +1,33 @@
 'use client'
 
-import { useState, useEffect, createContext, useContext, useCallback } from 'react'
+import {
+  useState, useEffect, createContext, useContext, useCallback, useRef
+} from 'react'
 import { api } from './api'
 
 export interface User {
   id: string
   email: string
   name: string
-  currency: string
-  dateFormat: string
+  currency: string | null
+  dateFormat: string | null
 }
 
-export interface AuthState {
+interface AuthState {
   user: User | null
   token: string | null
   isLoading: boolean
   isAuthenticated: boolean
 }
 
-export interface AuthContextType extends AuthState {
+interface AuthContextType extends AuthState {
   signIn: (email: string, password: string) => Promise<void>
   signUp: (email: string, password: string, name: string) => Promise<void>
   signOut: () => void
   refreshUser: () => Promise<void>
+  updateUser: (user: Partial<User>) => void
 }
 
-// Token storage
 const TOKEN_KEY = 'notekori_token'
 
 export const getStoredToken = (): string | null => {
@@ -33,182 +35,116 @@ export const getStoredToken = (): string | null => {
   return localStorage.getItem(TOKEN_KEY)
 }
 
-export const setStoredToken = (token: string): void => {
+const setStoredToken = (token: string) => {
   if (typeof window === 'undefined') return
   localStorage.setItem(TOKEN_KEY, token)
 }
 
-export const removeStoredToken = (): void => {
+const removeStoredToken = () => {
   if (typeof window === 'undefined') return
   localStorage.removeItem(TOKEN_KEY)
 }
 
-// Auth API functions
-export const authAPI = {
-  signIn: async (email: string, password: string): Promise<{ user: User; token: string }> => {
-    const response = await api.post('/api/auth/login', { email, password })
-    const { user, token } = response.data.data
-
-    setStoredToken(token)
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-
-    return { user, token }
-  },
-
-  signUp: async (email: string, password: string, name: string): Promise<{ user: User; token: string }> => {
-    const response = await api.post('/api/auth/register', { email, password, name })
-    const { user, token } = response.data.data
-
-    setStoredToken(token)
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-
-    return { user, token }
-  },
-
-  signOut: (): void => {
-    removeStoredToken()
-    delete api.defaults.headers.common['Authorization']
-  },
-
-  getCurrentUser: async (): Promise<User | null> => {
-    try {
-      const token = getStoredToken()
-      if (!token) return null
-
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-      const response = await api.get('/api/auth/me')
-      return response.data.data
-    } catch (error) {
-      // Token is invalid, remove it
-      removeStoredToken()
-      delete api.defaults.headers.common['Authorization']
-      return null
-    }
-  }
+const setAuthHeader = (token: string) => {
+  api.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
 
-// Auth Context
+const clearAuthHeader = () => {
+  delete api.defaults.headers.common['Authorization']
+}
+
 const AuthContext = createContext<AuthContextType | null>(null)
 
-interface AuthProviderProps {
-  children: React.ReactNode
-}
-
-export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AuthState>({
     user: null,
     token: null,
     isLoading: true,
     isAuthenticated: false,
   })
+  const initialised = useRef(false)
 
-  // Initialize auth state
   useEffect(() => {
-    const initAuth = async () => {
+    if (initialised.current) return
+    initialised.current = true
+
+    const init = async () => {
       const token = getStoredToken()
-      if (token) {
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-        const user = await authAPI.getCurrentUser()
-        if (user) {
-          setState({
-            user,
-            token,
-            isLoading: false,
-            isAuthenticated: true,
-          })
-          return
-        }
+      if (!token) {
+        setState(s => ({ ...s, isLoading: false }))
+        return
       }
-
-      setState({
-        user: null,
-        token: null,
-        isLoading: false,
-        isAuthenticated: false,
-      })
+      setAuthHeader(token)
+      try {
+        const res = await api.get('/api/auth/me')
+        setState({ user: res.data.data, token, isLoading: false, isAuthenticated: true })
+      } catch {
+        removeStoredToken()
+        clearAuthHeader()
+        setState({ user: null, token: null, isLoading: false, isAuthenticated: false })
+      }
     }
-
-    initAuth()
+    init()
   }, [])
 
-  const handleSignIn = useCallback(async (email: string, password: string) => {
-    setState(prev => ({ ...prev, isLoading: true }))
+  const signIn = useCallback(async (email: string, password: string) => {
+    setState(s => ({ ...s, isLoading: true }))
     try {
-      const { user, token } = await authAPI.signIn(email, password)
-      setState({
-        user,
-        token,
-        isLoading: false,
-        isAuthenticated: true,
-      })
-    } catch (error) {
-      setState(prev => ({ ...prev, isLoading: false }))
-      throw error
+      const res = await api.post('/api/auth/login', { email, password })
+      const { user, token } = res.data.data
+      setStoredToken(token)
+      setAuthHeader(token)
+      setState({ user, token, isLoading: false, isAuthenticated: true })
+    } catch (err) {
+      setState(s => ({ ...s, isLoading: false }))
+      throw err
     }
   }, [])
 
-  const handleSignUp = useCallback(async (email: string, password: string, name: string) => {
-    setState(prev => ({ ...prev, isLoading: true }))
+  const signUp = useCallback(async (email: string, password: string, name: string) => {
+    setState(s => ({ ...s, isLoading: true }))
     try {
-      const { user, token } = await authAPI.signUp(email, password, name)
-      setState({
-        user,
-        token,
-        isLoading: false,
-        isAuthenticated: true,
-      })
-    } catch (error) {
-      setState(prev => ({ ...prev, isLoading: false }))
-      throw error
+      const res = await api.post('/api/auth/register', { email, password, name })
+      const { user, token } = res.data.data
+      setStoredToken(token)
+      setAuthHeader(token)
+      setState({ user, token, isLoading: false, isAuthenticated: true })
+    } catch (err) {
+      setState(s => ({ ...s, isLoading: false }))
+      throw err
     }
   }, [])
 
-  const handleSignOut = useCallback(() => {
-    authAPI.signOut()
-    setState({
-      user: null,
-      token: null,
-      isLoading: false,
-      isAuthenticated: false,
-    })
+  const signOut = useCallback(() => {
+    removeStoredToken()
+    clearAuthHeader()
+    setState({ user: null, token: null, isLoading: false, isAuthenticated: false })
   }, [])
 
   const refreshUser = useCallback(async () => {
-    if (!state.token) return
+    const token = getStoredToken()
+    if (!token) return
     try {
-      const user = await authAPI.getCurrentUser()
-      if (user) {
-        setState(prev => ({ ...prev, user }))
-      } else {
-        handleSignOut()
-      }
-    } catch (error) {
-      handleSignOut()
+      const res = await api.get('/api/auth/me')
+      setState(s => ({ ...s, user: res.data.data }))
+    } catch {
+      signOut()
     }
-  }, [state.token, handleSignOut])
+  }, [signOut])
 
-  const value: AuthContextType = {
-    ...state,
-    signIn: handleSignIn,
-    signUp: handleSignUp,
-    signOut: handleSignOut,
-    refreshUser,
-  }
+  const updateUser = useCallback((updates: Partial<User>) => {
+    setState(s => s.user ? { ...s, user: { ...s.user, ...updates } } : s)
+  }, [])
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ ...state, signIn, signUp, signOut, refreshUser, updateUser }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
-// Hook for using auth
-export function useAuth(): AuthContextType {
-  const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider')
-  }
-  return context
+export function useAuth() {
+  const ctx = useContext(AuthContext)
+  if (!ctx) throw new Error('useAuth must be used within AuthProvider')
+  return ctx
 }
-
-// Legacy exports for backward compatibility
-export const signIn = authAPI.signIn
-export const signUp = authAPI.signUp
-export const signOut = authAPI.signOut
-export const getCurrentUser = authAPI.getCurrentUser

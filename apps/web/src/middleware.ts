@@ -1,33 +1,26 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// Public routes that don't require authentication
-const publicRoutes = ['/login', '/register', '/']
+// Public routes — no auth required
+const PUBLIC_PATHS = ['/login', '/register', '/forgot-password']
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Check if it's a public route
-  if (publicRoutes.includes(pathname)) {
+  // Always allow public paths and Next.js internals
+  if (
+    PUBLIC_PATHS.some(p => pathname.startsWith(p)) ||
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api') ||
+    pathname === '/favicon.ico'
+  ) {
     return NextResponse.next()
   }
 
-  // Check for token in localStorage (client-side only)
-  // Since middleware runs on the server, we can't access localStorage
-  // We'll handle auth protection in the client-side components instead
-
+  // Root redirect — let the page component handle via client auth
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 }
