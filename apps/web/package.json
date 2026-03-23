@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "deploy": "npm run build && npx wrangler deploy",
     "lint": "next lint",
     "type-check": "tsc --noEmit"
   },
