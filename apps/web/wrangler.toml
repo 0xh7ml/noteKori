@@ -3,12 +3,9 @@ type = "javascript"
 compatibility_date = "2024-03-01"
 
 [build]
-command = "npm run build"
+command = "npx next build"
 cwd = "."
 watch_paths = ["src/**/*.ts", "src/**/*.tsx", "public/**/*"]
-
-[build.upload]
-format = "service-worker"
 
 [env.production]
 name = "notekori-web"
