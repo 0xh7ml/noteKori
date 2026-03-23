@@ -1,0 +1,30 @@
+{
+  "name": "@notekori/api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:generate": "drizzle-kit generate:sqlite",
+    "db:migrate": "wrangler d1 execute notekori-db --local --file=./src/db/migrations/0000_special_magma.sql",
+    "db:migrate:prod": "wrangler d1 execute notekori-db --file=./src/db/migrations/0000_special_magma.sql",
+    "db:seed": "wrangler d1 execute notekori-db --local --command=\"$(cat ./src/db/seed.sql)\"",
+    "db:studio": "drizzle-kit studio",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "hono": "^4.0.0",
+    "@hono/zod-validator": "^0.2.0",
+    "drizzle-orm": "^0.30.0",
+    "zod": "^3.23.0",
+    "uuid": "^9.0.0",
+    "bcryptjs": "^2.4.3",
+    "@types/bcryptjs": "^2.4.6"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0",
+    "drizzle-kit": "^0.20.0",
+    "@cloudflare/workers-types": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}

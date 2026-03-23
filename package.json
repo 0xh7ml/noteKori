@@ -1,0 +1,33 @@
+{
+  "name": "notekori",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NoteKori - Cloud-based Personal Finance Tracker",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "build": "npm run build -w web",
+    "deploy:api": "npm run deploy -w api",
+    "db:generate": "npm run db:generate -w api",
+    "db:migrate": "npm run db:migrate -w api",
+    "db:seed": "npm run db:seed -w api",
+    "lint": "npm run lint --workspaces --if-present",
+    "type-check": "npm run type-check --workspaces --if-present"
+  },
+  "keywords": [
+    "finance",
+    "expense-tracker",
+    "personal-finance",
+    "nextjs",
+    "cloudflare"
+  ],
+  "author": "Saikat",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}

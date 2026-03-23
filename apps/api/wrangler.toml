@@ -1,0 +1,18 @@
+name = "notekori-api"
+main = "src/index.ts"
+compatibility_date = "2024-09-01"
+compatibility_flags = ["nodejs_compat"]
+account_id = "ba08e4b771c56e90351420d1a38885db"
+[[d1_databases]]
+binding = "DB"
+database_name = "notekori-db"
+database_id = "cbc32ef5-d886-44f4-9317-ef9efab60df4"
+
+[vars]
+FRONTEND_URL = "http://localhost:3000"
+AUTH_SECRET = "1HzDGkYlzIVZlqpPSu0VBk0IQxQPQt7oaPFRk9vCcL4="
+
+
+# Cron: process recurring transactions every day at midnight UTC
+[[triggers.crons]]
+crons = ["0 0 * * *"]
