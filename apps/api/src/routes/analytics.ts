@@ -54,8 +54,8 @@ route.get('/by-category', async (c) => {
     ))
     .where(sql`${categories.userId} IN ('system', ${userId})`)
     .groupBy(categories.id)
-    .having(sql`total > 0`)
-    .orderBy(sql`total DESC`)
+    .having(sql`COALESCE(SUM(${transactions.amount}), 0) > 0`)
+    .orderBy(sql`COALESCE(SUM(${transactions.amount}), 0) DESC`)
 
   const grandTotal = rows.reduce((s, r) => s + r.total, 0)
 

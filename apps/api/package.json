@@ -6,9 +6,9 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "db:generate": "drizzle-kit generate:sqlite",
-    "db:migrate": "wrangler d1 execute notekori-db --local --file=./src/db/migrations/0000_special_magma.sql",
-    "db:migrate:prod": "wrangler d1 execute notekori-db --file=./src/db/migrations/0000_special_magma.sql",
-    "db:seed": "wrangler d1 execute notekori-db --local --command=\"$(cat ./src/db/seed.sql)\"",
+    "db:migrate": "wrangler d1 execute notekori-db --remote --file=./src/db/migrations/0000_special_magma.sql",
+    "db:migrate:prod": "wrangler d1 execute notekori-db --remote --file=./src/db/migrations/0000_special_magma.sql",
+    "db:seed": "wrangler d1 execute notekori-db --remote --command=\"$(cat ./src/db/seed.sql)\"",
     "db:studio": "drizzle-kit studio",
     "type-check": "tsc --noEmit"
   },
