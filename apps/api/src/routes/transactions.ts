@@ -15,8 +15,8 @@ const transactionSchema = z.object({
   notes: z.string().max(500).optional(),
   tags: z.array(z.string()).default([]),
   date: z.string().datetime(),
-  isRecurring: z.boolean().default(false),
-  recurringId: z.string().optional(),
+
+
 })
 
 const filterSchema = z.object({

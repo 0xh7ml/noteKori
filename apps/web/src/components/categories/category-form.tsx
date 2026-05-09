@@ -47,6 +47,7 @@ interface Props {
 }
 
 function CategoryIcon({ icon, className }: { icon: string; className?: string }) {
+  if (!icon) return <Icons.Tag className={cn('h-4 w-4', className)} />
   const name = icon.split('-').map((w: string) => w[0].toUpperCase() + w.slice(1)).join('')
   const Comp = (Icons as any)[name] ?? Icons.Tag
   return <Comp className={cn('h-4 w-4', className)} />

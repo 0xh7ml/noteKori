@@ -10,13 +10,19 @@ import { categoriesRoute }   from './routes/categories'
 import { analyticsRoute }    from './routes/analytics'
 import { profileRoute }      from './routes/profile'
 import { requireAuth }       from './lib/middleware'
-import { getDb }             from './lib/db'
-import { transactions } from './db/schema'
-import { eq }      from 'drizzle-orm'
 
 const app = new Hono<{ Bindings: Env }>()
 
-// ── Global middleware ──────────────────────────────────────────────────────────
+// ── CORS middleware (must be first, before auth) ──────────────────────────────
+app.use('*', cors({
+  origin:       (_, c) => c.env.FRONTEND_URL ?? '*',
+  credentials:  true,
+  allowHeaders: ['Content-Type', 'Authorization'],
+  allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  maxAge:       86400,
+}))
+
+// ── Logger middleware ───────────────────────────────────────────────────────────
 app.use('*', logger())
 
 // ── Error handler ──────────────────────────────────────────────────────────────
@@ -31,12 +37,6 @@ app.onError((err, c) => {
   console.error('Unhandled error:', err)
   return c.json({ error: 'Internal server error' }, 500)
 })
-app.use('*', cors({
-  origin:       (_, c) => c.env.FRONTEND_URL ?? '*',
-  credentials:  true,
-  allowHeaders: ['Content-Type', 'Authorization'],
-  allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-}))
 
 // ── Public routes ──────────────────────────────────────────────────────────────
 app.route('/api/auth', authRoute)
@@ -50,8 +50,6 @@ app.route('/api/profile',      profileRoute)
 
 // ── Health check ───────────────────────────────────────────────────────────────
 app.get('/health', (c) => c.json({ status: 'ok', ts: new Date().toISOString() }))
-
-
 
 // ── Cloudflare Worker export ────────────────────────────────────────────────────
 export default app

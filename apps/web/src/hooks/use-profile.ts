@@ -21,7 +21,11 @@ export function useProfile() {
     queryFn: () =>
       api.get<{ data: UserProfile }>('/api/profile')
         .then(r => r.data.data),
-    staleTime: 5 * 60_000,
+    staleTime: 10 * 60_000, // 10 minutes - data is fresh for this long
+    gcTime: 30 * 60_000, // 30 minutes - cache is kept for this long
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   })
 }
 

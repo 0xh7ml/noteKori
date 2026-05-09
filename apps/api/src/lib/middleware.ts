@@ -18,6 +18,11 @@ export const requireAuth = createMiddleware<{
   Bindings: Env
   Variables: AuthVariables
 }>(async (c, next) => {
+  // Skip auth for OPTIONS preflight requests (handled by CORS middleware)
+  if (c.req.method === 'OPTIONS') {
+    return next()
+  }
+
   // Get token from Authorization header
   const authorization = c.req.header('Authorization')
   if (!authorization?.startsWith('Bearer ')) {

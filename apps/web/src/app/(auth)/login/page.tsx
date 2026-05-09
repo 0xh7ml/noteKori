@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/lib/auth-client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,11 +12,20 @@ import Link from 'next/link'
 
 export default function LoginPage() {
   const router = useRouter()
-  const { signIn, isLoading } = useAuth()
+  const searchParams = useSearchParams()
+  const { signIn, isLoading, isAuthenticated } = useAuth()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   })
+
+  // Redirect to dashboard or intended page if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      const redirect = searchParams.get('redirect')
+      router.push(redirect || '/dashboard')
+    }
+  }, [isAuthenticated, searchParams, router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -29,7 +38,8 @@ export default function LoginPage() {
     try {
       await signIn(formData.email, formData.password)
       toast.success('Welcome back!')
-      router.push('/dashboard')
+      const redirect = searchParams.get('redirect')
+      router.push(redirect || '/dashboard')
     } catch (error: any) {
       const message = error?.response?.data?.error || 'Login failed'
       toast.error(message)

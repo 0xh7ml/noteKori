@@ -1,6 +1,10 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
+export function LoadingSkeleton({ className }: { className?: string }) {
+  return <Skeleton className={className} />
+}
+
 export function StatCardSkeleton() {
   return (
     <Card>

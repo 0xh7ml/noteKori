@@ -38,11 +38,15 @@ export const getStoredToken = (): string | null => {
 const setStoredToken = (token: string) => {
   if (typeof window === 'undefined') return
   localStorage.setItem(TOKEN_KEY, token)
+  // Also set cookie for middleware auth checks
+  document.cookie = `notekori_token=${token}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax`
 }
 
 const removeStoredToken = () => {
   if (typeof window === 'undefined') return
   localStorage.removeItem(TOKEN_KEY)
+  // Also remove cookie
+  document.cookie = 'notekori_token=; path=/; max-age=0; SameSite=Lax'
 }
 
 const setAuthHeader = (token: string) => {
@@ -76,7 +80,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       setAuthHeader(token)
       try {
-        const res = await api.get('/api/auth/me')
+        const res = await api.get<{ data: User }>('/api/profile')
         setState({ user: res.data.data, token, isLoading: false, isAuthenticated: true })
       } catch {
         removeStoredToken()
@@ -125,7 +129,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const token = getStoredToken()
     if (!token) return
     try {
-      const res = await api.get('/api/auth/me')
+      const res = await api.get<{ data: User }>('/api/profile')
       setState(s => ({ ...s, user: res.data.data }))
     } catch {
       signOut()

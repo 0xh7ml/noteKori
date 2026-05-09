@@ -1,7 +1,21 @@
+'use client'
+
+import { useAuthGuard } from '@/hooks/use-auth-guard'
 import { Sidebar } from '@/components/layout/sidebar'
 import { Header } from '@/components/layout/header'
+import { Loader2 } from 'lucide-react'
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+function AppLayoutContent({ children }: { children: React.ReactNode }) {
+  const { ready } = useAuthGuard()
+
+  if (!ready) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
   return (
     <div className="flex h-screen overflow-hidden bg-background">
       <Sidebar />
@@ -13,4 +27,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       </div>
     </div>
   )
+}
+
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  return <AppLayoutContent>{children}</AppLayoutContent>
 }

@@ -2,7 +2,6 @@
 
 export type TransactionType = 'income' | 'expense'
 export type CategoryType = 'income' | 'expense' | 'both'
-export type RecurringFrequency = 'daily' | 'weekly' | 'monthly' | 'yearly'
 
 export interface User {
   id: string
@@ -24,8 +23,6 @@ export interface Transaction {
   notes?: string | null
   tags: string // JSON array string
   date: string
-  isRecurring: boolean
-  recurringId?: string | null
   createdAt: string
   updatedAt: string
 }
@@ -38,22 +35,6 @@ export interface Category {
   color: string
   type: CategoryType
   isDefault: boolean
-  createdAt: string
-}
-
-export interface RecurringTransaction {
-  id: string
-  userId: string
-  type: TransactionType
-  amount: number
-  categoryId: string
-  title: string
-  notes?: string | null
-  frequency: RecurringFrequency
-  startDate: string
-  endDate?: string | null
-  nextDueDate: string
-  isActive: boolean
   createdAt: string
 }
 

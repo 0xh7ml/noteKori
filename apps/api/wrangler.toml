@@ -1,0 +1,10 @@
+name = "notekori-api"
+main = "src/index.ts"
+compatibility_date = "2024-03-01"
+
+[vars]
+FRONTEND_URL = "http://localhost:3000"
+
+[[d1_databases]]
+binding = "DB"
+database_id = "cbc32ef5-d886-44f4-9317-ef9efab60df4"

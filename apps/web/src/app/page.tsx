@@ -1,5 +1,4 @@
-import { redirect } from 'next/navigation'
-
+// Root redirect is now handled by middleware based on auth status
 export default function HomePage() {
-  redirect('/dashboard')
+  return null
 }

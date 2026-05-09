@@ -21,7 +21,9 @@ api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401 && typeof window !== 'undefined') {
+      // Clear both localStorage and cookie
       localStorage.removeItem('notekori_token')
+      document.cookie = 'notekori_token=; path=/; max-age=0; SameSite=Lax'
       window.location.href = '/login'
     }
     return Promise.reject(err)

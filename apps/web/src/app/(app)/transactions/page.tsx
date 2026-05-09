@@ -6,11 +6,12 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Sheet } from '@/components/ui/sheet'
 import { Plus, Search } from 'lucide-react'
-import { useTransactions } from '@/hooks/use-transactions'
+import { useTransactions, useCreateTransaction, useUpdateTransaction } from '@/hooks/use-transactions'
 import { useCategories } from '@/hooks/use-categories'
 import { useProfile } from '@/hooks/use-profile'
 import { formatCurrency } from '@/lib/utils'
 import { format } from 'date-fns'
+import { toast } from 'sonner'
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table'
@@ -41,6 +42,9 @@ export default function TransactionsPage() {
   const { data: profile } = useProfile()
   const currency = profile?.currency ?? 'USD'
 
+  const createTx = useCreateTransaction()
+  const updateTx = useUpdateTransaction(editTx?.id ?? '')
+
   const transactions = (data?.data ?? []).map((tx: Transaction) => ({
     ...tx,
     category: categories.find((c: any) => c.id === tx.categoryId),
@@ -59,6 +63,16 @@ export default function TransactionsPage() {
   }
 
   const pagination = data?.pagination
+
+  const handleSubmit = async (values: any) => {
+    if (editTx) {
+      await updateTx.mutateAsync(values)
+      toast.success('Transaction updated')
+    } else {
+      await createTx.mutateAsync(values)
+      toast.success('Transaction added')
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -197,7 +211,16 @@ export default function TransactionsPage() {
       <TransactionForm
         open={formOpen}
         onOpenChange={v => { setFormOpen(v); if (!v) setEditTx(null) }}
-        transaction={editTx}
+        defaultValues={editTx ? {
+          type: editTx.type,
+          amount: editTx.amount,
+          categoryId: editTx.categoryId,
+          title: editTx.title,
+          notes: editTx.notes || '',
+          tagsRaw: editTx.tags?.join(', ') || '',
+          date: editTx.date.split('T')[0],
+        } : undefined}
+        onSubmit={handleSubmit}
       />
       {deleteTx && (
         <DeleteDialog

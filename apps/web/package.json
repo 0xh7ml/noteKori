@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.0.0",
+    "@notekori/types": "^1.0.0",
     "@radix-ui/react-avatar": "^1.0.0",
     "@radix-ui/react-dialog": "^1.0.0",
     "@radix-ui/react-dropdown-menu": "^2.0.0",

@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { useAuthGuard } from '@/hooks/use-auth-guard'
 import { useAuth } from '@/lib/auth-client'
 import { useAnalyticsSummary } from '@/hooks/use-analytics'
+import { useCreateTransaction, useUpdateTransaction } from '@/hooks/use-transactions'
 import { BalanceCard } from '@/components/dashboard/balance-card'
 import { SpendingByCategory } from '@/components/dashboard/spending-by-category'
 import { RecentTransactions } from '@/components/dashboard/recent-transactions'
@@ -12,10 +12,10 @@ import { DeleteDialog } from '@/components/transactions/delete-dialog'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { format, startOfMonth, endOfMonth } from 'date-fns'
+import { toast } from 'sonner'
 import type { Transaction } from '@notekori/types'
 
 export default function DashboardPage() {
-  const { ready } = useAuthGuard()
   const { user } = useAuth()
   const currency = user?.currency ?? 'USD'
 
@@ -27,13 +27,24 @@ export default function DashboardPage() {
   const [editTx, setEditTx]             = useState<Transaction | null>(null)
   const [deleteTx, setDeleteTx]         = useState<Transaction | null>(null)
 
-  if (!ready) return null
+  const createTx = useCreateTransaction()
+  const updateTx = useUpdateTransaction(editTx?.id ?? '')
 
   const greeting = () => {
     const h = new Date().getHours()
     if (h < 12) return 'Good morning'
     if (h < 18) return 'Good afternoon'
     return 'Good evening'
+  }
+
+  const handleSubmit = async (values: any) => {
+    if (editTx) {
+      await updateTx.mutateAsync(values)
+      toast.success('Transaction updated')
+    } else {
+      await createTx.mutateAsync(values)
+      toast.success('Transaction added')
+    }
   }
 
   return (
@@ -80,7 +91,16 @@ export default function DashboardPage() {
       <TransactionForm
         open={formOpen}
         onOpenChange={v => { setFormOpen(v); if (!v) setEditTx(null) }}
-        transaction={editTx}
+        defaultValues={editTx ? {
+          type: editTx.type,
+          amount: editTx.amount,
+          categoryId: editTx.categoryId,
+          title: editTx.title,
+          notes: editTx.notes || '',
+          tagsRaw: editTx.tags?.join(', ') || '',
+          date: editTx.date.split('T')[0],
+        } : undefined}
+        onSubmit={handleSubmit}
       />
       {deleteTx && (
         <DeleteDialog

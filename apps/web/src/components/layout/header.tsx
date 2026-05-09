@@ -19,7 +19,6 @@ const TITLES: Record<string, string> = {
   '/transactions': 'Transactions',
   '/analytics':    'Analytics',
   '/categories':   'Categories',
-  '/recurring':    'Recurring',
   '/settings':     'Settings',
 }
 

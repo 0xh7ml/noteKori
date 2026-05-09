@@ -1,8 +1,7 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
-import { createUser, loginUser, getUserById } from '../lib/auth'
-import { requireAuth, type AuthVariables } from '../lib/middleware'
+import { createUser, loginUser } from '../lib/auth'
 import type { Env } from '../lib/db'
 
 const registerSchema = z.object({
@@ -60,12 +59,6 @@ authRoute.post('/login', zValidator('json', loginSchema), async (c) => {
     const message = error instanceof Error ? error.message : 'Login failed'
     return c.json({ error: message }, 401)
   }
-})
-
-// GET /api/auth/me - Get current user profile (protected route)
-authRoute.get('/me', requireAuth, async (c) => {
-  const user = c.get('user')
-  return c.json({ data: user })
 })
 
 // POST /api/auth/logout

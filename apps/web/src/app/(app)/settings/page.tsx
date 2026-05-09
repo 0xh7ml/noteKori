@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -14,7 +14,6 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { toast } from 'sonner'
 import { useProfile, useUpdateProfile } from '@/hooks/use-profile'
-import { useAuth } from '@/lib/auth-client'
 
 const CURRENCIES = [
   { code: 'USD', label: 'US Dollar ($)' },
@@ -27,43 +26,37 @@ const CURRENCIES = [
   { code: 'AUD', label: 'Australian Dollar (A$)' },
 ]
 
-const DATE_FORMATS = [
-  { value: "MMM d, yyyy", label: "Mar 23, 2026" },
-  { value: "dd/MM/yyyy", label: "23/03/2026" },
-  { value: "MM/dd/yyyy", label: "03/23/2026" },
-  { value: "yyyy-MM-dd", label: "2026-03-23" },
-]
-
 const schema = z.object({
   name: z.string().min(1, 'Name required').max(100),
   email: z.string().email('Valid email required'),
   currency: z.string().length(3),
-  dateFormat: z.string(),
 })
 type FormValues = z.infer<typeof schema>
 
 export default function SettingsPage() {
   const { data: profile, isLoading: isLoadingProfile } = useProfile()
-  const { signOut } = useAuth()
   const updateProfile = useUpdateProfile()
 
-  const { register, handleSubmit, watch, setValue, reset, formState: { errors, isSubmitting } } = useForm<FormValues>({
+  // Use memo to prevent unnecessary re-renders
+  const defaultCurrency = useMemo(() => profile?.currency || 'USD', [profile?.currency])
+
+  const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm<FormValues>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      name: profile?.name || '',
+      email: profile?.email || '',
+      currency: defaultCurrency,
+    },
   })
 
+  // Initialize form values when profile data changes
   useEffect(() => {
     if (profile) {
-      reset({
-        name: profile.name,
-        email: profile.email,
-        currency: profile.currency || 'USD',
-        dateFormat: profile.dateFormat || "MMM d, yyyy",
-      })
+      setValue('name', profile.name)
+      setValue('email', profile.email)
+      setValue('currency', profile.currency || 'USD')
     }
-  }, [profile, reset])
-
-  const selectedCurrency = watch('currency')
-  const selectedDateFormat = watch('dateFormat')
+  }, [profile, setValue])
 
   const onSubmit = async (values: FormValues) => {
     try {
@@ -76,6 +69,7 @@ export default function SettingsPage() {
   }
 
   if (isLoadingProfile) return <div className="text-center py-8">Loading...</div>
+  if (!profile) return null
 
   return (
     <div className="space-y-8 max-w-2xl mx-auto">
@@ -130,11 +124,13 @@ export default function SettingsPage() {
           <CardContent className="space-y-6">
             <div className="space-y-2">
               <Label>Currency</Label>
-              <Select value={selectedCurrency || 'USD'} onValueChange={(v) => setValue('currency', v)}>
+              <Select
+                key={defaultCurrency}
+                defaultValue={defaultCurrency}
+                onValueChange={(value) => setValue('currency', value)}
+              >
                 <SelectTrigger>
-                  <span>
-                    {selectedCurrency ? CURRENCIES.find(c => c.code === selectedCurrency)?.label : 'Select a currency'}
-                  </span>
+                  <SelectValue placeholder="Select a currency" />
                 </SelectTrigger>
                 <SelectContent>
                   {CURRENCIES.map(({ code, label }) => (
@@ -146,25 +142,6 @@ export default function SettingsPage() {
               </Select>
               <p className="text-xs text-muted-foreground">Choose your preferred currency for display</p>
             </div>
-
-            <div className="space-y-2">
-              <Label>Date Format</Label>
-              <Select value={selectedDateFormat || "MMM d, yyyy"} onValueChange={(v) => setValue('dateFormat', v)}>
-                <SelectTrigger>
-                  <span>
-                    {selectedDateFormat ? DATE_FORMATS.find(d => d.value === selectedDateFormat)?.label : 'Select a date format'}
-                  </span>
-                </SelectTrigger>
-                <SelectContent>
-                  {DATE_FORMATS.map(({ value, label }) => (
-                    <SelectItem key={value} value={value}>
-                      {label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <p className="text-xs text-muted-foreground">Choose how dates are displayed</p>
-            </div>
           </CardContent>
         </Card>
 
@@ -174,9 +151,6 @@ export default function SettingsPage() {
         <div className="flex gap-3">
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Saving...' : 'Save Changes'}
-          </Button>
-          <Button variant="outline" onClick={() => signOut()}>
-            Sign Out
           </Button>
         </div>
       </form>

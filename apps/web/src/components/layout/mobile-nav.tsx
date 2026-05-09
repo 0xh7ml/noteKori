@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import {
   Menu, Wallet, LayoutDashboard, CreditCard, BarChart3,
-  Tags, RotateCcw, Settings, LogOut,
+  Tags, Settings, LogOut,
 } from 'lucide-react'
 
 const NAV = [
@@ -18,7 +18,6 @@ const NAV = [
   { label: 'Transactions', href: '/transactions',  icon: CreditCard      },
   { label: 'Analytics',    href: '/analytics',    icon: BarChart3        },
   { label: 'Categories',   href: '/categories',   icon: Tags             },
-  { label: 'Recurring',    href: '/recurring',    icon: RotateCcw        },
   { label: 'Settings',     href: '/settings',     icon: Settings         },
 ]
 
