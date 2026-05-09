@@ -9,4 +9,4 @@ watch_paths = ["src/**/*.ts", "src/**/*.tsx", "public/**/*"]
 
 [env.production]
 name = "notekori-web"
-vars = { NEXT_PUBLIC_API_URL = "https://notekori-api.saikat-oubd.workers.dev" }
+vars = { NEXT_PUBLIC_API_URL = "https://notekori-api.saikat-oubd.workers.dev" } 
