@@ -217,7 +217,7 @@ export default function TransactionsPage() {
           categoryId: editTx.categoryId,
           title: editTx.title,
           notes: editTx.notes || '',
-          tagsRaw: editTx.tags?.join(', ') || '',
+          tagsRaw: editTx.tags ? JSON.parse(editTx.tags).join(', ') : '',
           date: editTx.date.split('T')[0],
         } : undefined}
         onSubmit={handleSubmit}

@@ -26,11 +26,13 @@ import { LoadingSkeleton } from '@/components/shared/loading-skeleton'
 // ─── Types ────────────────────────────────────────────────────────────────────
 type FormValues = z.infer<typeof schema>
 
+type SubmitValues = Omit<FormValues, 'tagsRaw'> & { tags?: string[] }
+
 type Props = {
   open: boolean
   onOpenChange: (open: boolean) => void
   defaultValues?: Partial<FormValues>
-  onSubmit: (values: FormValues) => Promise<void>
+  onSubmit: (values: SubmitValues) => Promise<void>
 }
 
 const schema = z.object({
@@ -71,11 +73,15 @@ export function TransactionForm({ open, onOpenChange, defaultValues, onSubmit }:
   const handleFormSubmit = async (values: FormValues) => {
     try {
       // Convert date from "yyyy-MM-dd" to full ISO datetime string
-      const submitValues = {
+      // Convert tagsRaw (comma-separated) to tags array
+      const submitValues: SubmitValues = {
         ...values,
         date: new Date(values.date).toISOString(),
+        tags: values.tagsRaw
+          ? values.tagsRaw.split(',').map(t => t.trim()).filter(Boolean)
+          : [],
       }
-      await onSubmit(submitValues as FormValues)
+      await onSubmit(submitValues)
       onOpenChange(false)
       reset({ type: 'expense', date: format(new Date(), 'yyyy-MM-dd') })
     } catch {
