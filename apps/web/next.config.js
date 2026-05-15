@@ -4,7 +4,7 @@ const nextConfig = {
   swcMinify: true,
   transpilePackages: ['@notekori/types'],
   env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://notekori-api-production.saikat-oubd.workers.dev',
   },
   images: {
     domains: [],

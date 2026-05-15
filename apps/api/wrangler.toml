@@ -1,10 +1,16 @@
 name = "notekori-api"
 main = "src/index.ts"
 compatibility_date = "2024-03-01"
+account_id = "ba08e4b771c56e90351420d1a38885db"
+workers_dev = true
 
-[vars]
-FRONTEND_URL = "http://localhost:3000"
+[env.production]
+vars = { FRONTEND_URL = "https://notekori.itsaikat.com", ENVIRONMENT = "production". AUTH_SECRET="changeme"}
 
-[[d1_databases]]
+[[env.production.d1_databases]]
 binding = "DB"
 database_id = "cbc32ef5-d886-44f4-9317-ef9efab60df4"
+database_name = "notekori-db"
+
+[env.development]
+vars = { FRONTEND_URL = "http://localhost:3000", ENVIRONMENT = "development" }

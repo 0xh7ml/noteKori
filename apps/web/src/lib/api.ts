@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8787',
+  baseURL: process.env.NEXT_PUBLIC_API_URL ?? 'https://notekori-api-production.saikat-oubd.workers.dev',
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 })
