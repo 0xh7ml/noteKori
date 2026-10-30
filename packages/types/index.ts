@@ -80,3 +80,56 @@ export interface MonthlyTrendData {
   income: number
   expense: number
 }
+
+export type DebtType = 'debt' | 'loan'
+export type DebtStatus = 'active' | 'settled'
+
+export interface Debt {
+  id: string
+  userId: string
+  title: string
+  type: DebtType
+  totalAmount: number
+  paidAmount: number
+  dueDate?: string | null
+  counterparty?: string | null
+  notes?: string | null
+  status: DebtStatus
+  createdAt: string
+}
+
+export interface DebtPayment {
+  id: string
+  debtId: string
+  userId: string
+  amount: number
+  date: string
+  notes?: string | null
+}
+
+export type VehicleType = 'bike' | 'car' | 'other'
+export type FuelType = 'petrol' | 'diesel' | 'electric'
+export type VehicleLogType = 'fuel' | 'maintenance' | 'other'
+
+export interface Vehicle {
+  id: string
+  userId: string
+  name: string
+  type: VehicleType
+  fuelType: FuelType
+  initialKm: number
+  createdAt: string
+}
+
+export interface VehicleLog {
+  id: string
+  vehicleId: string
+  userId: string
+  logType: VehicleLogType
+  currentKm: number
+  fuelLiters?: number | null
+  fuelAmount?: number | null
+  otherAmount?: number | null
+  notes?: string | null
+  date: string
+}

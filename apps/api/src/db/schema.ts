@@ -49,6 +49,63 @@ export const transactions = sqliteTable('transactions', {
   categoryIdx: index('tx_category_idx').on(t.categoryId),
 }))
 
+// ─── Debts ────────────────────────────────────────────────────────────────────
+export const debts = sqliteTable('debts', {
+  id: text('id').primaryKey(),
+  userId: text('user_id').notNull(),
+  title: text('title').notNull(),
+  type: text('type', { enum: ['debt', 'loan'] }).notNull(), // debt = I owe, loan = owed to me
+  totalAmount: real('total_amount').notNull(),
+  paidAmount: real('paid_amount').notNull().default(0),
+  dueDate: text('due_date'),
+  counterparty: text('counterparty'),
+  notes: text('notes'),
+  status: text('status', { enum: ['active', 'settled'] }).notNull().default('active'),
+  createdAt: text('created_at').default(sql`(datetime('now'))`),
+}, (t) => ({
+  userIdx: index('debts_user_idx').on(t.userId),
+}))
+
+export const debtPayments = sqliteTable('debt_payments', {
+  id: text('id').primaryKey(),
+  debtId: text('debt_id').notNull().references(() => debts.id),
+  userId: text('user_id').notNull(),
+  amount: real('amount').notNull(),
+  date: text('date').notNull(),
+  notes: text('notes'),
+}, (t) => ({
+  debtIdx: index('debt_payments_debt_idx').on(t.debtId),
+}))
+
+// ─── Vehicles ─────────────────────────────────────────────────────────────────
+export const vehicles = sqliteTable('vehicles', {
+  id: text('id').primaryKey(),
+  userId: text('user_id').notNull(),
+  name: text('name').notNull(),
+  type: text('type', { enum: ['bike', 'car', 'other'] }).notNull(),
+  fuelType: text('fuel_type', { enum: ['petrol', 'diesel', 'electric'] }).notNull(),
+  initialKm: real('initial_km').notNull().default(0),
+  createdAt: text('created_at').default(sql`(datetime('now'))`),
+}, (t) => ({
+  userIdx: index('vehicles_user_idx').on(t.userId),
+}))
+
+export const vehicleLogs = sqliteTable('vehicle_logs', {
+  id: text('id').primaryKey(),
+  vehicleId: text('vehicle_id').notNull().references(() => vehicles.id),
+  userId: text('user_id').notNull(),
+  logType: text('log_type', { enum: ['fuel', 'maintenance', 'other'] }).notNull(),
+  currentKm: real('current_km').notNull(),
+  fuelLiters: real('fuel_liters'),
+  fuelAmount: real('fuel_amount'),
+  otherAmount: real('other_amount'),
+  notes: text('notes'),
+  date: text('date').notNull(),
+}, (t) => ({
+  vehicleIdx: index('vehicle_logs_vehicle_idx').on(t.vehicleId),
+  dateIdx: index('vehicle_logs_date_idx').on(t.date),
+}))
+
 // ─── Inferred Types ───────────────────────────────────────────────────────────
 export type User = typeof users.$inferSelect
 export type NewUser = typeof users.$inferInsert
@@ -56,3 +113,7 @@ export type Transaction = typeof transactions.$inferSelect
 export type NewTransaction = typeof transactions.$inferInsert
 export type Category = typeof categories.$inferSelect
 export type NewCategory = typeof categories.$inferInsert
+export type Debt = typeof debts.$inferSelect
+export type DebtPayment = typeof debtPayments.$inferSelect
+export type Vehicle = typeof vehicles.$inferSelect
+export type VehicleLog = typeof vehicleLogs.$inferSelect

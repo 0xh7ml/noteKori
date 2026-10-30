@@ -8,6 +8,7 @@ import type { AuthVariables } from '../lib/middleware'
 import { v4 as uuidv4 } from 'uuid'
 
 const transactionSchema = z.object({
+  id: z.string().uuid().optional(),
   type: z.enum(['income', 'expense']),
   amount: z.number().positive(),
   categoryId: z.string().min(1),
@@ -66,9 +67,9 @@ route.get('/', zValidator('query', filterSchema), async (c) => {
 route.post('/', zValidator('json', transactionSchema), async (c) => {
   const db = getDb(c.env.DB)
   const userId = c.get('userId')
-  const body = c.req.valid('json')
+  const { id: clientId, ...body } = c.req.valid('json')
   const now = new Date().toISOString()
-  const id = uuidv4()
+  const id = clientId ?? uuidv4()
 
   await db.insert(transactions).values({
     id,
@@ -77,7 +78,7 @@ route.post('/', zValidator('json', transactionSchema), async (c) => {
     tags: JSON.stringify(body.tags),
     createdAt: now,
     updatedAt: now,
-  })
+  }).onConflictDoNothing()
 
   return c.json({ data: { id, ...body } }, 201)
 })

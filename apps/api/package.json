@@ -8,6 +8,7 @@
     "db:generate": "drizzle-kit generate:sqlite",
     "db:migrate": "wrangler d1 execute notekori-db --remote --file=./src/db/migrations/0000_special_magma.sql",
     "db:migrate:prod": "wrangler d1 execute notekori-db --remote --file=./src/db/migrations/0000_special_magma.sql",
+    "db:migrate:0001": "wrangler d1 execute notekori-db --env production --remote --file=./src/db/migrations/0001_debts_vehicles.sql",
     "db:seed": "wrangler d1 execute notekori-db --remote --command=\"$(cat ./src/db/seed.sql)\"",
     "db:studio": "drizzle-kit studio",
     "type-check": "tsc --noEmit"
@@ -25,6 +26,7 @@
     "wrangler": "^3.0.0",
     "drizzle-kit": "^0.20.0",
     "@cloudflare/workers-types": "^4.0.0",
+    "@types/uuid": "^9.0.0",
     "typescript": "^5.0.0"
   }
 }

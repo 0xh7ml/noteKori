@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@/lib/api'
+import { newId } from '@/lib/utils'
 import type { Transaction, PaginatedResponse } from '@notekori/types'
 
 export interface TransactionFilters {
@@ -40,7 +41,7 @@ export function useCreateTransaction() {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: (data: Omit<Transaction, 'id' | 'userId' | 'createdAt' | 'updatedAt'>) =>
-      api.post('/api/transactions', data).then(r => r.data),
+      api.post('/api/transactions', { id: newId(), ...data }).then(r => r.data),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: txKeys.all })
       qc.invalidateQueries({ queryKey: ['analytics'] })
