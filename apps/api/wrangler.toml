@@ -5,7 +5,7 @@ account_id = "ba08e4b771c56e90351420d1a38885db"
 workers_dev = true
 
 [env.production]
-vars = { FRONTEND_URL = "https://notekori.itsaikat.com", ENVIRONMENT = "production", AUTH_SECRET="changeme"}
+vars = { FRONTEND_URL = "https://notekori.itsaikat.com", ENVIRONMENT = "production"}
 
 [[env.production.d1_databases]]
 binding = "DB"
