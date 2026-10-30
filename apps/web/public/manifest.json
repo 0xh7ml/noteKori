@@ -1,0 +1,23 @@
+{
+  "name": "NoteKori",
+  "short_name": "NoteKori",
+  "description": "Personal finance tracker for income, expenses, debts and vehicle costs",
+  "id": "/dashboard",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#18181b",
+  "theme_color": "#18181b",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Transactions", "url": "/transactions" },
+    { "name": "Debts", "url": "/debts" },
+    { "name": "Vehicles", "url": "/vehicles" }
+  ]
+}
