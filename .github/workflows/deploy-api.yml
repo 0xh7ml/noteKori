@@ -35,4 +35,4 @@ jobs:
 
       - name: Deploy the Worker
         working-directory: apps/api
-        run: npx wrangler deploy --env production
+        run: npx wrangler@4 deploy --env production
