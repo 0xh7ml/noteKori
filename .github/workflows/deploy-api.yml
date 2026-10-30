@@ -36,3 +36,14 @@ jobs:
       - name: Deploy the Worker
         working-directory: apps/api
         run: npx wrangler deploy --env production
+
+      - name: Sync AUTH_SECRET
+        working-directory: apps/api
+        env:
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+        run: |
+          if [ -z "$AUTH_SECRET" ]; then
+            echo "::error::AUTH_SECRET is not set in the production-api environment"
+            exit 1
+          fi
+          printf '%s' "$AUTH_SECRET" | npx wrangler secret put AUTH_SECRET --env production
