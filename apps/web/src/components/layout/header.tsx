@@ -18,6 +18,8 @@ const TITLES: Record<string, string> = {
   '/dashboard':    'Dashboard',
   '/transactions': 'Transactions',
   '/analytics':    'Analytics',
+  '/debts':        'Debts',
+  '/vehicles':     'Vehicles',
   '/categories':   'Categories',
   '/settings':     'Settings',
 }

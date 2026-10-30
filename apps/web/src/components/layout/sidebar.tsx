@@ -7,7 +7,7 @@ import { useAuth } from '@/lib/auth-client'
 import { initials } from '@/lib/utils'
 import {
   LayoutDashboard, CreditCard, BarChart3,
-  Tags, Settings, Wallet, LogOut,
+  Tags, Settings, Wallet, LogOut, Landmark, Car,
 } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -20,6 +20,8 @@ const NAV = [
   { label: 'Dashboard',    href: '/dashboard',    icon: LayoutDashboard },
   { label: 'Transactions', href: '/transactions',  icon: CreditCard      },
   { label: 'Analytics',    href: '/analytics',    icon: BarChart3        },
+  { label: 'Debts',        href: '/debts',        icon: Landmark         },
+  { label: 'Vehicles',     href: '/vehicles',     icon: Car              },
   { label: 'Categories',   href: '/categories',   icon: Tags             },
   { label: 'Settings',     href: '/settings',     icon: Settings         },
 ]

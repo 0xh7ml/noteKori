@@ -15,6 +15,10 @@ function makeQueryClient() {
         refetchOnWindowFocus: false,
         refetchOnMount: false,
         refetchOnReconnect: false,
+        networkMode: 'offlineFirst', // try the network/SW cache once, keep showing cached data offline
+      },
+      mutations: {
+        networkMode: 'always', // offline writes are queued in IndexedDB by the axios interceptor
       },
     },
   })

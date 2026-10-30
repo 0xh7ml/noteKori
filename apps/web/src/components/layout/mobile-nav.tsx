@@ -10,13 +10,15 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import {
   Menu, Wallet, LayoutDashboard, CreditCard, BarChart3,
-  Tags, Settings, LogOut,
+  Tags, Settings, LogOut, Landmark, Car,
 } from 'lucide-react'
 
 const NAV = [
   { label: 'Dashboard',    href: '/dashboard',    icon: LayoutDashboard },
   { label: 'Transactions', href: '/transactions',  icon: CreditCard      },
   { label: 'Analytics',    href: '/analytics',    icon: BarChart3        },
+  { label: 'Debts',        href: '/debts',        icon: Landmark         },
+  { label: 'Vehicles',     href: '/vehicles',     icon: Car              },
   { label: 'Categories',   href: '/categories',   icon: Tags             },
   { label: 'Settings',     href: '/settings',     icon: Settings         },
 ]

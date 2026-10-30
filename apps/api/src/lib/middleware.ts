@@ -49,8 +49,8 @@ export const requireAuth = createMiddleware<{
     id: user.id,
     email: user.email,
     name: user.name,
-    currency: user.currency,
-    dateFormat: user.dateFormat,
+    currency: user.currency ?? 'USD',
+    dateFormat: user.dateFormat ?? 'MMM d, yyyy',
   })
 
   await next()

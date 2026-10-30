@@ -9,8 +9,8 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspaces --if-present",
-    "build": "npm run build -w web",
-    "deploy:web": "npm run build -w web && npm run deploy -w web",
+    "build": "npm run build -w @notekori/web",
+    "deploy:web": "npm run deploy -w @notekori/web",
     "lint": "npm run lint --workspaces --if-present",
     "type-check": "npm run type-check --workspaces --if-present"
   },

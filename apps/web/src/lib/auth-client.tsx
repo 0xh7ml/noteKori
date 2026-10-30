@@ -42,9 +42,29 @@ const setStoredToken = (token: string) => {
   document.cookie = `notekori_token=${token}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax`
 }
 
+const USER_KEY = 'notekori_user'
+
+const cacheUser = (user: User) => {
+  try { localStorage.setItem(USER_KEY, JSON.stringify(user)) } catch { /* storage unavailable */ }
+}
+
+const readCachedUser = (): User | null => {
+  try {
+    const raw = localStorage.getItem(USER_KEY)
+    return raw ? (JSON.parse(raw) as User) : null
+  } catch {
+    return null
+  }
+}
+
+const isNetworkError = (err: unknown) => !(err as { response?: unknown })?.response
+
 const removeStoredToken = () => {
   if (typeof window === 'undefined') return
   localStorage.removeItem(TOKEN_KEY)
+  localStorage.removeItem(USER_KEY)
+  // Drop cached pages and API data so the next account on this device cannot see them
+  navigator.serviceWorker?.controller?.postMessage({ type: 'CLEAR_CACHES' })
   // Also remove cookie
   document.cookie = 'notekori_token=; path=/; max-age=0; SameSite=Lax'
 }
@@ -81,8 +101,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setAuthHeader(token)
       try {
         const res = await api.get<{ data: User }>('/api/profile')
+        cacheUser(res.data.data)
         setState({ user: res.data.data, token, isLoading: false, isAuthenticated: true })
-      } catch {
+      } catch (err) {
+        // Offline or unreachable: keep the session and fall back to the last known profile
+        if (isNetworkError(err)) {
+          setState({ user: readCachedUser(), token, isLoading: false, isAuthenticated: true })
+          return
+        }
         removeStoredToken()
         clearAuthHeader()
         setState({ user: null, token: null, isLoading: false, isAuthenticated: false })
@@ -97,6 +123,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const res = await api.post('/api/auth/login', { email, password })
       const { user, token } = res.data.data
       setStoredToken(token)
+      cacheUser(user)
       setAuthHeader(token)
       setState({ user, token, isLoading: false, isAuthenticated: true })
     } catch (err) {
@@ -111,6 +138,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const res = await api.post('/api/auth/register', { email, password, name })
       const { user, token } = res.data.data
       setStoredToken(token)
+      cacheUser(user)
       setAuthHeader(token)
       setState({ user, token, isLoading: false, isAuthenticated: true })
     } catch (err) {
@@ -130,9 +158,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!token) return
     try {
       const res = await api.get<{ data: User }>('/api/profile')
+      cacheUser(res.data.data)
       setState(s => ({ ...s, user: res.data.data }))
-    } catch {
-      signOut()
+    } catch (err) {
+      if (!isNetworkError(err)) signOut()
     }
   }, [signOut])
 

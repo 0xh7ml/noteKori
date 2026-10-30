@@ -9,6 +9,8 @@ import { transactionsRoute } from './routes/transactions'
 import { categoriesRoute }   from './routes/categories'
 import { analyticsRoute }    from './routes/analytics'
 import { profileRoute }      from './routes/profile'
+import { debtsRoute }        from './routes/debts'
+import { vehiclesRoute }     from './routes/vehicles'
 import { requireAuth }       from './lib/middleware'
 
 const app = new Hono<{ Bindings: Env }>()
@@ -47,6 +49,8 @@ app.route('/api/transactions', transactionsRoute)
 app.route('/api/categories',   categoriesRoute)
 app.route('/api/analytics',    analyticsRoute)
 app.route('/api/profile',      profileRoute)
+app.route('/api/debts',        debtsRoute)
+app.route('/api/vehicles',     vehiclesRoute)
 
 // ── Health check ───────────────────────────────────────────────────────────────
 app.get('/health', (c) => c.json({ status: 'ok', ts: new Date().toISOString() }))

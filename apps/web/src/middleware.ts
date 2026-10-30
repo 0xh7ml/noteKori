@@ -17,7 +17,11 @@ export function middleware(request: NextRequest) {
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
-    pathname === '/favicon.ico'
+    pathname === '/favicon.ico' ||
+    pathname === '/sw.js' ||
+    pathname === '/manifest.json' ||
+    pathname === '/offline.html' ||
+    pathname.startsWith('/icons/')
   ) {
     return NextResponse.next()
   }
